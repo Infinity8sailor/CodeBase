@@ -1,0 +1,13 @@
+.navbar {
+    width: 100%;
+}
+
+.navbar-collapse {
+    /* display: flex!important; */
+    justify-content: space-between!important;
+    background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
+
+}
+.ultiSearch {
+    width: 500px;
+}

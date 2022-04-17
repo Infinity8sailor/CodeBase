@@ -1,0 +1,18 @@
+.App {
+    height: 100%;
+    width: 100%;
+}.top-wrapper {
+    background-color: red;
+    height: 41px;
+    display: flex;
+    justify-content: space-between;
+
+}
+.main-wrapper {
+    height : calc(100vh - 41px);
+}
+
+#Admin-Section {
+    height: 100%;
+    width: 100%;
+}
