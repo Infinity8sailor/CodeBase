@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import {REACT_APP_CLIENT_ID} from process.env;
 
 
-const CLIENT_ID = '374169744841-t3ekshrangb1aerf3th3kuv8fsu5efbq.apps.googleusercontent.com';
+const CLIENT_ID = REACT_APP_CLIENT_ID;
 
 
 class GoogleBtn extends Component {

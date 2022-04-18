@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import {  useDispatch, useSelector } from "react-redux";
-
 import { Login } from "../data/data";
 import { toggleLogin, userInfo } from "../../actions";
+const {REACT_APP_CLIENT_ID} = process.env;
 
-// const CLIENT_ID = '374169744841-t3ekshrangb1aerf3th3kuv8fsu5efbq.apps.googleusercontent.com';
+
+const CLIENT_ID = REACT_APP_CLIENT_ID;
+
 export const LoginTab = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [user_id, setUser_id] = useState("");
@@ -90,7 +92,7 @@ export const LoginTab = (props) => {
             {isOpen ? 
             <div className="Glogout">
               <GoogleLogout
-                clientId="374169744841-t3ekshrangb1aerf3th3kuv8fsu5efbq.apps.googleusercontent.com"
+                clientId={CLIENT_ID}
                 buttonText="Logout"
                 onLogoutSuccess={signOut}
                 ></GoogleLogout>
@@ -100,7 +102,7 @@ export const LoginTab = (props) => {
             </>
         ) : (
           <GoogleLogin
-            clientId="374169744841-t3ekshrangb1aerf3th3kuv8fsu5efbq.apps.googleusercontent.com"
+            clientId={CLIENT_ID}
             onSuccess={onSignIn}
             isSignedIn={true}
           />

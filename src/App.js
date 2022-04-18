@@ -1,10 +1,7 @@
 import { Component } from "react";
-// import LoginTab from "./components/login/login";
 import "./App.css";
 import { LoginTab } from "./components/login/login";
 import { Pagex } from "./components/pages/index";
-// import { Tasks } from "./components/pages/Tasks/tasks";
-// import { Nav } from "./components/user_bar/user_bar";
 
 class App extends Component {
   constructor(props) {
