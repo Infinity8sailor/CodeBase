@@ -75,15 +75,15 @@ export function Leetcode(props) {
   const dispatch = useDispatch();
 
   const get_problems_List = async () => {
-    setBusy(true);
-    // var projects_data = await tasksList(user_info.auth_token, user_info.user_email);
-    var data = await leetcodeList(user_info.auth_token, user_info.user_email);
-    console.log("problems List ", data);
-    setBusy(false);
-    // dispatch(updateProjectsList(projects_data));
-    dispatch(updateLeetcodeList(data));
-    // setList(data);
-    // return null;
+    if (user_info) {
+      setBusy(true);
+
+      var data = await leetcodeList(user_info.auth_token, user_info.user_email);
+
+      console.log("problems List ", data);
+      setBusy(false);
+      dispatch(updateLeetcodeList(data));
+    }
   };
   const setCurrent_Active = (d, i) => {
     if (problem_info_on === i) {
@@ -216,11 +216,12 @@ export function Leetcode(props) {
 
   // }
   useEffect(() => {
-    console.log("jjjo");
+    console.log("UseEffect Triggered..!");
     // setBusy(true);
     // get_tasks_List();
     // setBusy(false);
-  }, []);
+    get_problems_List();
+  }, [user_info]);
 
   const get_date = (date) => {
     var data = new Date(date);
@@ -320,7 +321,7 @@ export function Leetcode(props) {
                         className="btn-sm btn-outline-success"
                         // onClick={() => refresh()}
                       >
-                        No. of Q :  {list ? list.length : 0}
+                        No. of Q : {list ? list.length : 0}
                       </button>
                       <button
                         type="button"
@@ -395,65 +396,64 @@ export function Leetcode(props) {
                                 </div>
                               </div>
                             </div>
-                            {
-                              problem_info_on === i ?
-                            <div
-                              className={
-                                problem_info_on === i
-                                  ? "leetcode-problem_info-active "
-                                  : "leetcode-problem_info-block "
-                              }
-                            >
-                              <div className="problem-info-details">
-                                {(problem_des_on[1] === problem_info_on) &
-                                problem_des_on[0] ? (
-                                  // MyEditor(d.problem_description)
-                                  <div>
-                                    <div className="editor_local">
-                                      <Editor
-                                        editorState={editorState}
-                                        onChange={setEditorState}
-                                      />
+                            {problem_info_on === i ? (
+                              <div
+                                className={
+                                  problem_info_on === i
+                                    ? "leetcode-problem_info-active "
+                                    : "leetcode-problem_info-block "
+                                }
+                              >
+                                <div className="problem-info-details">
+                                  {(problem_des_on[1] === problem_info_on) &
+                                  problem_des_on[0] ? (
+                                    // MyEditor(d.problem_description)
+                                    <div>
+                                      <div className="editor_local">
+                                        <Editor
+                                          editorState={editorState}
+                                          onChange={setEditorState}
+                                        />
+                                      </div>
+                                      <button
+                                        onClick={() =>
+                                          // setProblem_des_on([true, i])
+                                          updateProblem_description(d, i)
+                                        }
+                                      >
+                                        Save
+                                      </button>
                                     </div>
-                                    <button
-                                      onClick={() =>
-                                        // setProblem_des_on([true, i])
-                                        updateProblem_description(d, i)
-                                      }
-                                    >
-                                      Save
-                                    </button>
-                                  </div>
-                                ) : (
-                                  <div>
-                                    <div className="editor_local">
-                                      <Editor
-                                        // editorState={editorState}
-                                        editorState={editorState}
-                                        // onChange={setEditorState}
-                                        readOnly={true}
-                                      />
-                                    </div>
-                                    {/* <SyntaxHighlighter
+                                  ) : (
+                                    <div>
+                                      <div className="editor_local">
+                                        <Editor
+                                          // editorState={editorState}
+                                          editorState={editorState}
+                                          // onChange={setEditorState}
+                                          readOnly={true}
+                                        />
+                                      </div>
+                                      {/* <SyntaxHighlighter
                                       language="javascript"
                                       style={docco}
                                       showLineNumbers="false"
                                     >
                                       {d.problem_description}
                                     </SyntaxHighlighter> */}
-                                    <button
-                                      onClick={() =>
-                                        setProblem_des_on([true, i])
-                                      }
-                                    >
-                                      Update
-                                    </button>
-                                  </div>
-                                )}
-                                {/* {d.problem_description} */}
-                              </div>
-                              <div className="problem-solutions">
-                                {/* <div className="problem_info-adder">
+                                      <button
+                                        onClick={() =>
+                                          setProblem_des_on([true, i])
+                                        }
+                                      >
+                                        Update
+                                      </button>
+                                    </div>
+                                  )}
+                                  {/* {d.problem_description} */}
+                                </div>
+                                <div className="problem-solutions">
+                                  {/* <div className="problem_info-adder">
                               <input
                               title="Sub-task"
                               type="text"
@@ -472,97 +472,98 @@ export function Leetcode(props) {
                               close
                               </button>
                             </div> */}
-                                <div className="problem-solutions-array">
-                                  <li class="dropdown">
-                                    <div
-                                      class="dropdown-toggle btn btn-secondary btn-sm"
-                                      role="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      {codestate.lan + " | " + codestate.info}
-                                    </div>
-                                    <ul class="dropdown-menu">
-                                      {d.solutions ? (
-                                        d.solutions.map((s, si) => (
-                                          <>
-                                            <li
-                                              className="dropdown-item"
-                                              onClick={() =>
-                                                setCurrent_Active_soln(s, si)
-                                              }
-                                            >
-                                              {s.lan + " | " + s.info}
-                                            </li>
-                                          </>
-                                        ))
+                                  <div className="problem-solutions-array">
+                                    <li class="dropdown">
+                                      <div
+                                        class="dropdown-toggle btn btn-secondary btn-sm"
+                                        role="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        {codestate.lan + " | " + codestate.info}
+                                      </div>
+                                      <ul class="dropdown-menu">
+                                        {d.solutions ? (
+                                          d.solutions.map((s, si) => (
+                                            <>
+                                              <li
+                                                className="dropdown-item"
+                                                onClick={() =>
+                                                  setCurrent_Active_soln(s, si)
+                                                }
+                                              >
+                                                {s.lan + " | " + s.info}
+                                              </li>
+                                            </>
+                                          ))
+                                        ) : (
+                                          <a class="dropdown-item">
+                                            No Solutions Available
+                                          </a>
+                                        )}
+                                      </ul>
+                                      <button
+                                        className="problem-solution-adder"
+                                        onClick={() => {
+                                          newBlankSolution(d, i);
+                                        }}
+                                      >
+                                        +
+                                      </button>
+                                      {problem_soln_edit[0] ? (
+                                        <button
+                                          onClick={() => updateSolution(d, i)}
+                                        >
+                                          save
+                                        </button>
                                       ) : (
-                                        <a class="dropdown-item">
-                                          No Solutions Available
-                                        </a>
+                                        <button
+                                          onClick={() =>
+                                            setProblem_soln_edit([
+                                              true,
+                                              problem_info_on,
+                                              problem_soln_on,
+                                            ])
+                                          }
+                                        >
+                                          Update
+                                        </button>
                                       )}
-                                    </ul>
-                                    <button
-                                      className="problem-solution-adder"
-                                      onClick={() => {
-                                        newBlankSolution(d, i);
-                                      }}
-                                    >
-                                      +
-                                    </button>
-                                    {problem_soln_edit[0] ? (
                                       <button
-                                        onClick={() => updateSolution(d, i)}
+                                        className="problem-solution-adder"
+                                        onClick={() => {
+                                          del_Solution(d, i);
+                                        }}
                                       >
-                                        save
+                                        <i className="material-icons">delete</i>
                                       </button>
+                                    </li>
+                                  </div>
+                                  <div className="problem-solution-selected">
+                                    {!problem_soln_edit[0] ? (
+                                      <SyntaxHighlighter
+                                        language={codestate.lan}
+                                        style={coldarkDark}
+                                        showLineNumbers="true"
+                                      >
+                                        {codestate.code}
+                                      </SyntaxHighlighter>
                                     ) : (
-                                      <button
-                                        onClick={() =>
-                                          setProblem_soln_edit([
-                                            true,
-                                            problem_info_on,
-                                            problem_soln_on,
-                                          ])
-                                        }
-                                      >
-                                        Update
-                                      </button>
+                                      // <CodeEditor data={codestate} onChange={setCodestate} viewOnly={true} />
+                                      <div>
+                                        <CodeEditor
+                                          data={codestate}
+                                          onChange={setCodestate}
+                                          viewOnly={true}
+                                        />
+                                      </div>
                                     )}
-                                    <button
-                                      className="problem-solution-adder"
-                                      onClick={() => {
-                                        del_Solution(d, i);
-                                      }}
-                                    >
-                                      <i className="material-icons">delete</i>
-                                    </button>
-                                  </li>
-                                </div>
-                                <div className="problem-solution-selected">
-                                  {!problem_soln_edit[0] ? (
-                                    <SyntaxHighlighter
-                                      language={codestate.lan}
-                                      style={coldarkDark}
-                                      showLineNumbers="true"
-                                    >
-                                      {codestate.code}
-                                    </SyntaxHighlighter>
-                                  ) : (
-                                    // <CodeEditor data={codestate} onChange={setCodestate} viewOnly={true} />
-                                    <div>
-                                      <CodeEditor
-                                        data={codestate}
-                                        onChange={setCodestate}
-                                        viewOnly={true}
-                                      />
-                                    </div>
-                                  )}
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            : <></>
-                          }
+                            ) : (
+                              <></>
+                            )}
                           </div>
                         </li>
                       ))

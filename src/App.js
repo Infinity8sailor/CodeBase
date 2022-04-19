@@ -46,6 +46,9 @@ class App extends Component {
         <div className="wrapper">
           <header>
             <div className="top-wrapper">
+              <div className="top-wrapper-title">
+                Code-Base
+              </div>
               {/* <Nav data={{
                     loggedIn: this.loggedIn,
                   }} /> */}
@@ -78,7 +81,33 @@ class App extends Component {
               ) : (
                 <div className="login-page">
                   <h1> Welcome to Code-Base Web App</h1>
-                  <h2> Log In Or Register </h2>
+                  <h2> Log In with Google</h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
+                  <h2> </h2>
                 </div>
               )}
             </section>
