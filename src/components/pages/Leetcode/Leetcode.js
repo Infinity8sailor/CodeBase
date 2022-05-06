@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { updateLeetcodeProblemsList, updateProjectsList } from "../../../actions";
 import Modal from "./modal";
 import { selectPage } from "../../../actions";
-import { updateLeetcodeList } from "../../../actions";
+import { updateLeetcodeList, updateLeetcodeSearchList } from "../../../actions";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -35,6 +35,7 @@ export function Leetcode(props) {
   const [Leetcode_Problem_name, setLeetcode_Problem_name] = useState(
     "New Leetcode_Problem"
   );
+  const [Leetcode_Search, setLeetcode_Search] = useState("#Search");
   const [Leetcode_Problem_details, setLeetcode_Problem_details] =
     useState("None");
   const [Leetcode_Problem_solns, setLeetcode_Problem_solns] = useState([]);
@@ -65,7 +66,8 @@ export function Leetcode(props) {
   });
 
   // const [list, setList] = useState([]);
-  const list = useSelector((state) => state.leetcode_page_problems);
+  const raw_data = useSelector((state) => state.leetcode_page_problems);
+  var list =  useSelector((state) => state.leetcode_page_problems_filtered);
   const user_info = useSelector((state) => state.user_info);
 
   const [Count, setCount] = useState(0);
@@ -83,7 +85,35 @@ export function Leetcode(props) {
       console.log("problems List ", data);
       setBusy(false);
       dispatch(updateLeetcodeList(data));
+      dispatch(updateLeetcodeSearchList(data));
     }
+  };
+
+  const update_search = async () => {
+    setBusy(true);
+
+    const data = raw_data;
+    var res = [];
+
+    if ((Leetcode_Search == "") | (Leetcode_Search == "#Search")) {
+      res = data;
+      console.log("woking..",data);
+    } else {
+      for (let i = 0; i < data.length; i++) {
+        let rgx = new RegExp(Leetcode_Search.toLowerCase());
+        let j_data = JSON.stringify(data[i]).toLowerCase();
+        const isMatch = j_data.match(rgx) || [];
+        // console.log("is match ",isMatch.length);
+        if (isMatch.length !== 0) {
+          res.push(data[i]);
+        }
+      }
+    }
+
+    dispatch(updateLeetcodeSearchList(res));
+    list = res;
+    console.log("res : ", res.length);
+    setBusy(false);
   };
   const setCurrent_Active = (d, i) => {
     if (problem_info_on === i) {
@@ -223,6 +253,11 @@ export function Leetcode(props) {
     get_problems_List();
   }, [user_info]);
 
+  useEffect(() => {
+    console.log("UseEffect Triggered..! for new search..");
+    update_search();
+  }, [Leetcode_Search]);
+
   const get_date = (date) => {
     var data = new Date(date);
     var options = { weekday: "short", month: "short", day: "numeric" };
@@ -244,7 +279,7 @@ export function Leetcode(props) {
 
   return (
     <>
-      {/* {console.log("Rederered.")} */}
+      {console.log("Rederered.",list, Leetcode_Search)}
       {/* <div className="Tasks-Card-wrapper"> */}
       <div className="leetcode">
         <div className="leetcode-body">
@@ -309,6 +344,26 @@ export function Leetcode(props) {
                       </button>
                     </div>
                     <div className="leetcode-tool-buttons">
+                      <div className="leetcode-search">
+                        <div
+                          id="problem-search-box"
+                          className="leetcode-input-style"
+                        >
+                          <input
+                            title="Search"
+                            type="text"
+                            value={Leetcode_Search}
+                            onChange={(e) => setLeetcode_Search(e.target.value)}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          className="btn-sm btn-outline-success"
+                          // onClick={() => newProblem_submit()}
+                        >
+                          Search
+                        </button>
+                      </div>
                       <button
                         type="button"
                         className="btn-sm btn-outline-success"
@@ -339,8 +394,30 @@ export function Leetcode(props) {
                   <br />
                 </div>
                 <div class="mt-3">
+                  {/* <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link" href="#">
+                          1
+                        </a>
+                      </li>
+                      
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav> */}
                   <ul class="list list-inline">
-                    {list ? (
+                    {list.length !== 0 ? (
                       list.map((d, i) => (
                         <li className="list-group-item">
                           <div className="problem-wrapper row">

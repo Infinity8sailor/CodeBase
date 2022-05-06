@@ -27,3 +27,10 @@ export const updateLeetcodeList = (payload) => {
     payload : payload
   };
 };
+export const updateLeetcodeSearchList = (payload) => {
+  return {
+    type: "LEETCODE_PROBLEMS_FILTER_LIST",
+    // type: "LEETCODE_PROBLEMS_LIST",
+    payload : payload
+  };
+};

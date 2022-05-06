@@ -105,6 +105,8 @@ body {
     margin-bottom: 8px;
 }
 
+
+
 .leetcode-input-style {
     background: linear-gradient(to right, #B294FF, #57bde6, #FEFFB8, #57E6E6, #B294FF, #57E6E6);
     background-size: 500% auto;
@@ -113,6 +115,16 @@ body {
     border-radius: 10%;
     width: 15% ;
 }
+.leetcode-search {
+    display: flex;
+    justify-content: center;
+    margin-right: 40px;
+}
+
+#problem-search-box {
+    width: 250px;
+}
+
 #problem-no {
    width : 40px
 }
