@@ -2,23 +2,17 @@
 import axios from "axios";
 const { REACT_APP_BACKEND_SITE } = process.env;
 
-const site = REACT_APP_BACKEND_SITE;
-// const site = "http://localhost:4000/";
+// const site = REACT_APP_BACKEND_SITE;
+const site = "http://localhost:4000/";
 
 const backend_addresses = {
-  login:
-    site + ".netlify/functions/server/auth/login",
-  search_query:
-    site + ".netlify/functions/server/search/query",
+  login: site + "auth/login",
+  search_query: site + ".netlify/functions/server/search/query",
 
-  new_leetcode_add:
-    site + ".netlify/functions/server/leetcode/new",
-  leetcode_list:
-    site + ".netlify/functions/server/leetcode/list",
-  leetcode_del:
-    site + ".netlify/functions/server/leetcode/del",
-  leetcode_update:
-    site + ".netlify/functions/server/leetcode/update",
+  new_leetcode_add: site + "leetcode/new",
+  leetcode_list: site + "leetcode/list",
+  leetcode_del: site + "leetcode/del",
+  leetcode_update: site + "leetcode/update",
 };
 // const backend_addresses = {
 //   login: "http://localhost:4000/.netlify/functions/server/auth/login",
@@ -31,7 +25,7 @@ const newLeetcode = async (
   problem_title,
   user,
   level,
-  tags,
+  tags
 ) => {
   var data = {
     problem_no: problem_no,
@@ -78,7 +72,6 @@ const leetcodeList = async (token, user) => {
   // console.log("Task List :  ", res.data);
   return res ? res.data : null;
 };
-
 
 const Login = async (data) => {
   const res = await axios.post(
