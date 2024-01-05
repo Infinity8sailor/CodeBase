@@ -2,8 +2,8 @@
 import axios from "axios";
 const { REACT_APP_BACKEND_SITE } = process.env;
 
-// const site = REACT_APP_BACKEND_SITE;
-const site = "http://localhost:4000/";
+const site = REACT_APP_BACKEND_SITE;
+// const site = "http://localhost:4000/";
 
 const backend_addresses = {
   login: site + "auth/login",
@@ -14,10 +14,6 @@ const backend_addresses = {
   leetcode_del: site + "leetcode/del",
   leetcode_update: site + "leetcode/update",
 };
-// const backend_addresses = {
-//   login: "http://localhost:4000/.netlify/functions/server/auth/login",
-//   search_query: "http://localhost:4000/.netlify/functions/server/search/query",
-// };
 
 const newLeetcode = async (
   token,
