@@ -69,24 +69,15 @@ const leetcodeList = async (token, user) => {
   return res ? res.data : null;
 };
 
-const Login = async (data) => {
-  const res = await axios.post(
-    backend_addresses.login,
-    // 'https://docs-io-api.netlify.app/.netlify/functions/server/login',
-    // "http://localhost:4000/.netlify/functions/server/login",
-    { google_id: data[0], name: data[1], email: data[2], img_url: data[3] }
-  );
-  // .then((res) => {
-  //   console.log('Login',res.data);
-  //   // return res.data;
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
-  // const res1 = await res.json();
+const Login = async ({ sub, name, email, picture }) => {
+  const res = await axios.post(backend_addresses.login, {
+    google_id: sub,
+    name,
+    email,
+    img_url: picture,
+  });
   console.log(" Data >> Login >> ", res.data.login);
   return res;
-  // console.log("cell to be added","t i ",topic,"c i " , cell_index,"source ", source);
 };
 
 const updateLeetcode = async (Leetcode, token) => {
