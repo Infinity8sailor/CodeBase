@@ -67,7 +67,7 @@ export function Leetcode(props) {
 
   // const [list, setList] = useState([]);
   const raw_data = useSelector((state) => state.leetcode_page_problems);
-  var list =  useSelector((state) => state.leetcode_page_problems_filtered);
+  var list = useSelector((state) => state.leetcode_page_problems_filtered);
   const user_info = useSelector((state) => state.user_info);
 
   const [Count, setCount] = useState(0);
@@ -97,7 +97,7 @@ export function Leetcode(props) {
 
     if ((Leetcode_Search == "") | (Leetcode_Search == "#Search")) {
       res = data;
-      console.log("woking..",data);
+      console.log("woking..", data);
     } else {
       for (let i = 0; i < data.length; i++) {
         let rgx = new RegExp(Leetcode_Search.toLowerCase());
@@ -279,7 +279,7 @@ export function Leetcode(props) {
 
   return (
     <>
-      {console.log("Rederered.",list, Leetcode_Search)}
+      {console.log("Rederered.", list, Leetcode_Search)}
       {/* <div className="Tasks-Card-wrapper"> */}
       <div className="leetcode">
         <div className="leetcode-body">
@@ -300,7 +300,7 @@ export function Leetcode(props) {
                           type="text"
                           value={Leetcode_Problem_id}
                           onChange={(e) =>
-                            setLeetcode_Problem_id(e.target.value)
+                            setLeetcode_Problem_id(Number(e.target.value))
                           }
                         />
                       </div>

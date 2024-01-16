@@ -23,7 +23,7 @@ export const selectPage = (payload) => {
 
 export const updateLeetcodeList = (payload) => {
   return {
-    type: " ",
+    type: "LEETCODE_PROBLEMS_LIST",
     payload : payload
   };
 };

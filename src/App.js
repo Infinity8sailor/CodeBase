@@ -2,6 +2,8 @@ import { Component } from "react";
 import "./App.css";
 import { LoginTab } from "./components/login/login";
 import { Pagex } from "./components/pages/index";
+// import { GuestLogin } from "./components/data/data";
+import { GuestLoginTab } from "./components/login/guest_login";
 
 class App extends Component {
   constructor(props) {
@@ -23,9 +25,10 @@ class App extends Component {
     }
   }
 
-  auth_info = (token, user) => {
-    this.setState({ auth_token: token, user: user });
-  };
+  // auth_info = (token, user) => {
+  //   this.setState({ auth_token: token, user: user });
+  // };
+
   loggedIn = (loggedIn) => {
     this.setState({ loggedIn });
   };
@@ -37,6 +40,17 @@ class App extends Component {
       loggedIn: false,
     });
   };
+
+  // guestLogin = async () => {
+  //   const res = await GuestLogin();
+  //   if (res) {
+  //     this.setState({
+  //       auth_token: res.data["auth-token"],
+  //       user: "Guest",
+  //       loggedIn: true,
+  //     });
+  //   }
+  // };
   render() {
     console.log(" APP >> Render");
     console.log(" APP >> Render >> login : ", this.state);
@@ -46,9 +60,7 @@ class App extends Component {
         <div className="wrapper">
           <header>
             <div className="top-wrapper">
-              <div className="top-wrapper-title">
-                Code-Base
-              </div>
+              <div className="top-wrapper-title">Code-Base</div>
               {/* <Nav data={{
                     loggedIn: this.loggedIn,
                   }} /> */}
@@ -63,10 +75,10 @@ class App extends Component {
               >
                 <LoginTab
                   data={{
-                    auth_info: this.auth_info,
+                    // auth_info: this.auth_info,
                     signout: this.signOut,
                     loggedIn: this.loggedIn,
-                    loggedIn: this.loggedIn,
+                    // loggedIn: this.loggedIn,
                   }}
                 />
               </div>
@@ -82,32 +94,7 @@ class App extends Component {
                 <div className="login-page">
                   <h1> Welcome to Code-Base Web App</h1>
                   <h2> Log In with Google</h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
-                  <h2> </h2>
+                  <GuestLoginTab data={{ loggedIn: this.loggedIn }} />
                 </div>
               )}
             </section>

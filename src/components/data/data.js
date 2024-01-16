@@ -7,6 +7,7 @@ const site = REACT_APP_BACKEND_SITE;
 
 const backend_addresses = {
   login: site + "auth/login",
+  guestLogin: site + "auth/guest",
   search_query: site + ".netlify/functions/server/search/query",
 
   new_leetcode_add: site + "leetcode/new",
@@ -76,6 +77,11 @@ const Login = async ({ sub, name, email, picture }) => {
     email,
     img_url: picture,
   });
+  // console.log(" Data >> Login >> ", res.data.login);
+  return res;
+};
+const GuestLogin = async () => {
+  const res = await axios.post(backend_addresses.guestLogin);
   console.log(" Data >> Login >> ", res.data.login);
   return res;
 };
@@ -143,4 +149,5 @@ export {
   newLeetcode,
   deleteLeetcode,
   updateLeetcode,
+  GuestLogin,
 };
