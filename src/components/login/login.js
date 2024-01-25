@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Login } from "../data/data";
 import { toggleLogin, userInfo } from "../../actions";
 import { jwtDecode } from "jwt-decode";
+import GuestIcon from "./../data/images/dummy_icon.png";
 
 const { REACT_APP_CLIENT_ID } = process.env;
 const CLIENT_ID = REACT_APP_CLIENT_ID;
@@ -61,31 +62,33 @@ export const LoginTab = (props) => {
     setIsOpen(false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (_user) setUser(_user);
+    else setUser(dummy_user);
+  }, [_user]);
 
   return (
     <>
       {loggedIn ? (
         <>
           <div
-            style={{ display: "flex", cursor: "pointer", height: "40px" }}
+            className="flex cursor-pointer h-10 bg-white rounded-md px-1"
             onClick={toggleCollapse}
           >
             <img
-              src={user.img_url}
-              style={{ height: "40px", padding: 0, borderRadius: "50%" }}
-              alt="Duck"
+              src={user?.img_url ? user?.img_url : GuestIcon}
+              className="h-10 p-0 rounded-[50%] "
+              alt="User"
             />
-            <div
-              className="hidden md:visible lg:flex"
-              style={{ padding: "10px 10px", color: "white" }}
-            >
+            <div className="hidden md:visible lg:flex text-black py-2 pl-1 text-ellipsis">
               {user.user_name}
             </div>
           </div>
           {isOpen ? (
-            <div className="Glogout">
-              <button onClick={signOut}>Logout</button>
+            <div className="absolute top-12 bg-white rounded-lg">
+              <button className="rounded-md m-2" onClick={signOut}>
+                Logout
+              </button>
             </div>
           ) : (
             <></>
@@ -101,7 +104,6 @@ export const LoginTab = (props) => {
             theme="filled_black"
             text="continue_with"
             useOneTap={true}
-            // size="medium"
           />
         </GoogleOAuthProvider>
       )}

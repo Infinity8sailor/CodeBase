@@ -394,28 +394,7 @@ export function Leetcode(props) {
                   <br />
                 </div>
                 <div class="mt-3">
-                  {/* <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                      </li>
-                      <li class="page-item">
-                        <a class="page-link" href="#">
-                          1
-                        </a>
-                      </li>
-                      
-                      <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav> */}
+                 
                   <ul class="list list-inline">
                     {list.length !== 0 ? (
                       list.map((d, i) => (
@@ -426,12 +405,7 @@ export function Leetcode(props) {
                               onClick={() => setCurrent_Active(d, i)}
                             >
                               <div className="task-name">
-                                {/* <i
-                                class="material-icons"
-                                onClick={() => task_checkbox_submit(d, i)}
-                              >
-                                {d.status ? "done" : "check_box_outline_blank"}
-                              </i> */}
+                               
                                 <label className="form-check-label">
                                   <h6 class="mb-0">
                                     {d.problem_no + ". " + d.problem_title}
@@ -439,9 +413,7 @@ export function Leetcode(props) {
                                 </label>
                               </div>
                               <div className="task-tags">
-                                {/* <div className="task-tag" onClick={()=> setProblem_info_on(i)}>
-                              <i className="material-icons">add</i>
-                              </div> */}
+                              
                                 <div className="task-tag">
                                   <span class="badge bg-danger">
                                     {get_date_diff(d.future_ref)}
