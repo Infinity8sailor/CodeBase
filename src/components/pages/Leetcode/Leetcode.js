@@ -260,14 +260,14 @@ export function Leetcode(props) {
 
   return (
     <>
-      <div className="flex flex-col gap-0 h-full w-full px-2">
+      <div className="flex flex-col gap-0 h-full w-full px-1">
         <div class="flex flex-col justify-center items-center gap-2">
           <span class="mt-2 mb-1 font-bold text-2xl text-white">
             Coding Problems
           </span>
 
-          <div className="leetcode-tools bg-slate-500 rounded-lg py-2">
-            <div className="leetcode-new-problem-add">
+          <div className="flex flex-col justify-center bg-slate-500 rounded-lg py-2 gap-2">
+            <div className="flex justify-center flex-wrap gap-1">
               <div id="problem-no" className="leetcode-input-style">
                 <input
                   title="no."
@@ -308,13 +308,13 @@ export function Leetcode(props) {
               </div>
               <button
                 type="button"
-                className="bg-white px-2 rounded-md"
+                className="bg-white px-2 rounded-md "
                 onClick={() => newProblem_submit()}
               >
                 Create New
               </button>
             </div>
-            <div className="leetcode-tool-buttons">
+            <div className="flex justify-center flex-wrap items-center gap-1">
               <div className="leetcode-search">
                 <div id="problem-search-box" className="leetcode-input-style">
                   <input
@@ -339,7 +339,7 @@ export function Leetcode(props) {
               >
                 Get Problems
               </button>
-              <div className="bg-blue-200 px-2 rounded-md ml-2 max-h-10">
+              <div className="bg-blue-200 px-2 rounded-md ml-2 max-h-10 ">
                 No. of Q : {list ? list.length : 0}
               </div>
               <button
@@ -357,7 +357,7 @@ export function Leetcode(props) {
         </div>
         <br />
         <div class="flex-1 overflow-y-scroll overflow-x-hidden">
-          <ul class="flex flex-col gap-1 p-1 justify-center items-center">
+          <ul class="flex flex-col gap-1 py-1 justify-center items-center">
             {list.length !== 0 ? (
               list.map((d, i) => (
                 <li
@@ -366,7 +366,7 @@ export function Leetcode(props) {
                   } w-full items-center p-2`}
                 >
                   <div
-                    className="flex justify-between w-full"
+                    className="flex flex-col lg:flex-row justify-between w-full"
                     onClick={() => setCurrent_Active(d, i)}
                   >
                     <div className="task-name">
@@ -404,16 +404,17 @@ export function Leetcode(props) {
                   </div>
                   {problem_info_on === i ? (
                     <div
-                      className={
+                      className={`
+                      ${
                         problem_info_on === i
-                          ? "leetcode-problem_info-active "
-                          : "leetcode-problem_info-block "
-                      }
+                          ? "flex flex-col lg:flex-row gap-1 max-w-full"
+                          : "flex-none "
+                      } `}
                     >
-                      <div className="problem-info-details">
+                      <div className={`w-full lg:w-[50%] text-sm`}>
                         {(problem_des_on[1] === problem_info_on) &
                         problem_des_on[0] ? (
-                          <div>
+                          <div className="w-full overflow-x-scroll">
                             <div className="editor_local">
                               <Editor
                                 editorState={editorState}
@@ -422,15 +423,13 @@ export function Leetcode(props) {
                             </div>
                             <button
                               className="bg-green-300 px-1.5 rounded-md"
-                              onClick={() =>
-                                updateProblem_description(d, i)
-                              }
+                              onClick={() => updateProblem_description(d, i)}
                             >
                               Save
                             </button>
                           </div>
                         ) : (
-                          <div>
+                          <div className="w-full overflow-x-scroll">
                             <div className="editor_local">
                               <Editor
                                 editorState={editorState}
@@ -446,8 +445,8 @@ export function Leetcode(props) {
                           </div>
                         )}
                       </div>
-                      <div className="problem-solutions">
-                        <div className="problem-solutions-array flex gap-2">
+                      <div className="w-full lg:w-[50%]">
+                        <div className="problem-solutions-array flex flex-wrap gap-2">
                           <div
                             class="dropdown-toggle btn btn-secondary btn-sm"
                             role="button"
@@ -515,7 +514,7 @@ export function Leetcode(props) {
                             Add New
                           </button>
                         </div>
-                        <div className="problem-solution-selected">
+                        <div className="problem-solution-selected text-sm lg:text-base">
                           {!problem_soln_edit[0] ? (
                             <SyntaxHighlighter
                               language={codestate.lan}
