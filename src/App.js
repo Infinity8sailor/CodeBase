@@ -44,7 +44,7 @@ const App = () => {
           </div>
         </div>
       </header>
-      <main className="flex-1 flex justify-center items-center p-2 bg-[url('./../public/bg-image.jpg')] bg-no-repeat bg-cover bg-center bg-fixed">
+      <main className="flex-1 flex justify-center overflow-hidden items-center p-2 bg-[url('./../public/bg-image.jpg')] bg-no-repeat bg-cover bg-center bg-fixed">
         {state.loggedIn === true ? (
           <>
             <Pagex />

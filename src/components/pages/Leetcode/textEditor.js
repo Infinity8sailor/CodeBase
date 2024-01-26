@@ -8,13 +8,6 @@ const CodeEditor = (props) => {
   const [code_lan, setCodelan] = useState(props.data.lan);
   const [code_info, setCode_info] = useState(props.data.info);
   const [edit_on, setedit_on] = useState(props.viewOnly);
-  const [last_update, setLastUpdate] = useState(Date.now());
-  // const update_atInterval = () => {
-  //   var index = props.data.index;
-  //   console.log("useefeect or butoon clicked",index);
-  //   props.data.updatecell(index,content,"code_lan",code_lan,last_update);
-  //   setLastUpdate(Date.now());
-  // };
   const Lan_list = [
     {
       label: "javascript",
@@ -37,7 +30,7 @@ const CodeEditor = (props) => {
     setContent(code);
     setCodelan(lan);
     setCode_info(info);
-    let solution = { lan: lan, code: code, info:info };
+    let solution = { lan: lan, code: code, info: info };
     props.onChange(solution);
   };
 
@@ -62,20 +55,19 @@ const CodeEditor = (props) => {
   };
 
   useEffect(() => {
-    // update_atInterval();
-    // if (last_update + 5000 < Date.now() ){
-    // }
+   
   }, [code_lan, content]);
 
   return (
     <div className="code-edit-container">
       {edit_on ? (
-        <div>
-          <div className="select-container">
+        <div className="flex flex-col gap-1 mt-1">
+          <div className="">
             <select
+              className=" bg-slate-300 p-1 rounded-md"
               value={code_lan}
               onChange={(e) => {
-                onChange(e.target.value, content, code_info)
+                onChange(e.target.value, content, code_info);
               }}
             >
               {Lan_list.map((option) => (
@@ -83,22 +75,20 @@ const CodeEditor = (props) => {
               ))}
             </select>
           </div>
-          <div>
-          <textarea
-            className="code-info-input"
-            value={code_info}
-            onChange={(evt) => onChange(code_lan, content, evt.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-          </div>
+            <textarea
+              className="w-fit min-w-20 bg-slate-300 p-1 rounded-md"
+              value={code_info}
+              onChange={(evt) => onChange(code_lan, content, evt.target.value)}
+              onKeyDown={handleKeyDown}
+            />
 
           <textarea
-            className="code-input"
+            showLineNumbers
+            className="min-h-64 bg-slate-300 p-1 rounded-md"
             value={content}
             onChange={(evt) => onChange(code_lan, evt.target.value, code_info)}
             onKeyDown={handleKeyDown}
           />
-          {/* <button onClick={update_atInterval}>save</button> */}
         </div>
       ) : (
         <></>

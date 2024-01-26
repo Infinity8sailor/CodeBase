@@ -8,25 +8,18 @@ import {
   deleteLeetcode,
 } from "../../data/data";
 import { useDispatch, useSelector } from "react-redux";
-// import { useSelector } from "react-redux";
-// import { updateLeetcodeProblemsList, updateProjectsList } from "../../../actions";
 import Modal from "./modal";
-import { selectPage } from "../../../actions";
 import { updateLeetcodeList, updateLeetcodeSearchList } from "../../../actions";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CodeEditor from "./textEditor";
 import {
   Editor,
   EditorState,
-  RichUtils,
   convertToRaw,
   convertFromRaw,
   Modifier,
-  getDefaultKeyBinding,
-  DefaultDraftBlockRenderMap,
 } from "draft-js";
 import "draft-js/dist/Draft.css";
 
@@ -36,13 +29,13 @@ export function Leetcode(props) {
     "New Leetcode_Problem"
   );
   const [Leetcode_Search, setLeetcode_Search] = useState("#Search");
-  const [Leetcode_Problem_details, setLeetcode_Problem_details] =
-    useState("None");
-  const [Leetcode_Problem_solns, setLeetcode_Problem_solns] = useState([]);
-  const [Leetcode_Problem_visits, setLeetcode_Problem_visits] = useState([]);
-  const [Leetcode_Problem_futureRef, setLeetcode_Problem_futureRef] = useState(
-    []
-  );
+  // const [Leetcode_Problem_details, setLeetcode_Problem_details] =
+  //   useState("None");
+  // const [Leetcode_Problem_solns, setLeetcode_Problem_solns] = useState([]);
+  // const [Leetcode_Problem_visits, setLeetcode_Problem_visits] = useState([]);
+  // const [Leetcode_Problem_futureRef, setLeetcode_Problem_futureRef] = useState(
+  //   []
+  // );
   const [Leetcode_Problem_Tags, setLeetcode_Problem_Tags] = useState([]);
   const [Leetcode_Problem_level, setLeetcode_Problem_level] = useState("Easy");
 
@@ -65,7 +58,6 @@ export function Leetcode(props) {
     info: "no info here",
   });
 
-  // const [list, setList] = useState([]);
   const raw_data = useSelector((state) => state.leetcode_page_problems);
   var list = useSelector((state) => state.leetcode_page_problems_filtered);
   const user_info = useSelector((state) => state.user_info);
@@ -143,9 +135,6 @@ export function Leetcode(props) {
         setEditorState(EditorState.createWithContent(newContentState));
         // console.log("Dummy", newContentState);
       }
-
-      // setCodestate(d.solutions[0]);
-      // setProblem_soln_on(0);
       setCurrent_Active_soln(d.solutions[0], 0);
     }
   };
@@ -221,7 +210,6 @@ export function Leetcode(props) {
   };
   const refresh = () => {
     setCount(Count + 1);
-    // setIcon(icon === "done" ? "pending_actions" : "done");
   };
 
   const leetcode_delete = async () => {
@@ -229,9 +217,7 @@ export function Leetcode(props) {
     setDelModel(false);
     await deleteLeetcode(currDel, user_info.auth_token, user_info.user_email);
     setCurrDel(null);
-    // console
     get_problems_List();
-    // refresh();
   };
   const openModal = (task, i) => {
     console.log(task, " wants to get deleted.");
@@ -242,19 +228,14 @@ export function Leetcode(props) {
     console.log("modal closed");
     setDelModel(false);
   };
-  // const subTask_ = (i) => {
 
-  // }
   useEffect(() => {
-    console.log("UseEffect Triggered..!");
-    // setBusy(true);
-    // get_tasks_List();
-    // setBusy(false);
+    // console.log("UseEffect Triggered..!");
     get_problems_List();
   }, [user_info]);
 
   useEffect(() => {
-    console.log("UseEffect Triggered..! for new search..");
+    // console.log("UseEffect Triggered..! for new search..");
     update_search();
   }, [Leetcode_Search]);
 
@@ -279,368 +260,307 @@ export function Leetcode(props) {
 
   return (
     <>
-      {console.log("Rederered.", list, Leetcode_Search)}
-      {/* <div className="Tasks-Card-wrapper"> */}
-      <div className="leetcode">
-        <div className="leetcode-body">
-          <div class="leetcode-container m-3">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="align-items-center">
-                  <div className="leetcode-header">
-                    <div>
-                      <span class="leetcode-header">Leetcode Problems</span>
-                    </div>
-                  </div>
-                  <div className="leetcode-tools">
-                    <div className="leetcode-new-problem-add">
-                      <div id="problem-no" className="leetcode-input-style">
-                        <input
-                          title="no."
-                          type="text"
-                          value={Leetcode_Problem_id}
-                          onChange={(e) =>
-                            setLeetcode_Problem_id(Number(e.target.value))
-                          }
-                        />
-                      </div>
-                      <div id="problem-title" className="leetcode-input-style">
-                        <input
-                          title="Problem"
-                          type="text"
-                          placeholder="Enter New Problem Name"
-                          value={Leetcode_Problem_name}
-                          onChange={(e) =>
-                            setLeetcode_Problem_name(e.target.value)
-                          }
-                        />
-                      </div>
-                      <div className="leetcode-input-style">
-                        <input
-                          title="Level"
-                          type="text"
-                          value={Leetcode_Problem_level}
-                          onChange={(e) =>
-                            setLeetcode_Problem_level(e.target.value)
-                          }
-                        />
-                      </div>
-                      <div className="leetcode-input-style">
-                        <input
-                          title="tags"
-                          type="text"
-                          value={Leetcode_Problem_Tags}
-                          onChange={(e) =>
-                            setLeetcode_Problem_Tags(e.target.value.split(","))
-                          }
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        className="btn-sm btn-outline-success"
-                        onClick={() => newProblem_submit()}
-                      >
-                        Create New
-                      </button>
-                    </div>
-                    <div className="leetcode-tool-buttons">
-                      <div className="leetcode-search">
-                        <div
-                          id="problem-search-box"
-                          className="leetcode-input-style"
-                        >
-                          <input
-                            title="Search"
-                            type="text"
-                            value={Leetcode_Search}
-                            onChange={(e) => setLeetcode_Search(e.target.value)}
-                          />
-                        </div>
-                        <button
-                          type="button"
-                          className="btn-sm btn-outline-success"
-                          // onClick={() => newProblem_submit()}
-                        >
-                          Search
-                        </button>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn-sm btn-outline-success"
-                        onClick={() => get_problems_List()}
-                      >
-                        Get Problems
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-sm btn-outline-success"
-                        // onClick={() => refresh()}
-                      >
-                        No. of Q : {list ? list.length : 0}
-                      </button>
-                      <button
-                        type="button"
-                        className={
-                          busy
-                            ? "btn-sm btn-outline-danger"
-                            : "btn-sm btn-outline-success"
-                        }
-                        // onClick={() => refresh()}
-                      >
-                        {busy ? "Busy" : "Idel"}
-                      </button>
-                    </div>
-                  </div>
-                  <br />
-                </div>
-                <div class="mt-3">
-                 
-                  <ul class="list list-inline">
-                    {list.length !== 0 ? (
-                      list.map((d, i) => (
-                        <li className="list-group-item">
-                          <div className="problem-wrapper row">
-                            <div
-                              className="problem-info-inline"
-                              onClick={() => setCurrent_Active(d, i)}
-                            >
-                              <div className="task-name">
-                               
-                                <label className="form-check-label">
-                                  <h6 class="mb-0">
-                                    {d.problem_no + ". " + d.problem_title}
-                                  </h6>
-                                </label>
-                              </div>
-                              <div className="task-tags">
-                              
-                                <div className="task-tag">
-                                  <span class="badge bg-danger">
-                                    {get_date_diff(d.future_ref)}
-                                  </span>
-                                </div>
-                                <div className="task-tag">
-                                  {d.level == "Easy" ? (
-                                    <span class="badge bg-success">
-                                      {d.level}
-                                    </span>
-                                  ) : d.level == "Medium" ? (
-                                    <span class="badge bg-info">{d.level}</span>
-                                  ) : (
-                                    <span class="badge bg-danger">
-                                      {d.level}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="task-tag">
-                                  <span class="badge bg-secondary">
-                                    {d.tags}
-                                  </span>
-                                </div>
+      <div className="flex flex-col gap-0 h-full w-full px-2">
+        <div class="flex flex-col justify-center items-center gap-2">
+          <span class="mt-2 mb-1 font-bold text-2xl text-white">
+            Coding Problems
+          </span>
 
-                                <div className="task-tag">
-                                  <span onClick={() => openModal(d, i)}>
-                                    <i className="material-icons">delete</i>
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            {problem_info_on === i ? (
-                              <div
-                                className={
-                                  problem_info_on === i
-                                    ? "leetcode-problem_info-active "
-                                    : "leetcode-problem_info-block "
-                                }
-                              >
-                                <div className="problem-info-details">
-                                  {(problem_des_on[1] === problem_info_on) &
-                                  problem_des_on[0] ? (
-                                    // MyEditor(d.problem_description)
-                                    <div>
-                                      <div className="editor_local">
-                                        <Editor
-                                          editorState={editorState}
-                                          onChange={setEditorState}
-                                        />
-                                      </div>
-                                      <button
-                                        onClick={() =>
-                                          // setProblem_des_on([true, i])
-                                          updateProblem_description(d, i)
-                                        }
-                                      >
-                                        Save
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <div className="editor_local">
-                                        <Editor
-                                          // editorState={editorState}
-                                          editorState={editorState}
-                                          // onChange={setEditorState}
-                                          readOnly={true}
-                                        />
-                                      </div>
-                                      {/* <SyntaxHighlighter
-                                      language="javascript"
-                                      style={docco}
-                                      showLineNumbers="false"
-                                    >
-                                      {d.problem_description}
-                                    </SyntaxHighlighter> */}
-                                      <button
-                                        onClick={() =>
-                                          setProblem_des_on([true, i])
-                                        }
-                                      >
-                                        Update
-                                      </button>
-                                    </div>
-                                  )}
-                                  {/* {d.problem_description} */}
-                                </div>
-                                <div className="problem-solutions">
-                                  {/* <div className="problem_info-adder">
-                              <input
-                              title="Sub-task"
-                              type="text"
-                              placeholder="Enter New Sub Task"
-                              value={task_name}
-                              onChange={(e) => setTask_name(e.target.value)}
-                              />
-                              <button
-                              type="button"
-                              className="btn-sm btn-outline-success"
-                              onClick={() => newproblem_info_submit(d)}
-                              >
-                              Add Sub Task
-                              </button>
-                              <button onClick={() => setproblem_info_on(null)}>
-                              close
-                              </button>
-                            </div> */}
-                                  <div className="problem-solutions-array">
-                                    <li class="dropdown">
-                                      <div
-                                        class="dropdown-toggle btn btn-secondary btn-sm"
-                                        role="button"
-                                        data-bs-toggle="dropdown"
-                                        aria-expanded="false"
-                                      >
-                                        {codestate.lan + " | " + codestate.info}
-                                      </div>
-                                      <ul class="dropdown-menu">
-                                        {d.solutions ? (
-                                          d.solutions.map((s, si) => (
-                                            <>
-                                              <li
-                                                className="dropdown-item"
-                                                onClick={() =>
-                                                  setCurrent_Active_soln(s, si)
-                                                }
-                                              >
-                                                {s.lan + " | " + s.info}
-                                              </li>
-                                            </>
-                                          ))
-                                        ) : (
-                                          <a class="dropdown-item">
-                                            No Solutions Available
-                                          </a>
-                                        )}
-                                      </ul>
-                                      <button
-                                        className="problem-solution-adder"
-                                        onClick={() => {
-                                          newBlankSolution(d, i);
-                                        }}
-                                      >
-                                        +
-                                      </button>
-                                      {problem_soln_edit[0] ? (
-                                        <button
-                                          onClick={() => updateSolution(d, i)}
-                                        >
-                                          save
-                                        </button>
-                                      ) : (
-                                        <button
-                                          onClick={() =>
-                                            setProblem_soln_edit([
-                                              true,
-                                              problem_info_on,
-                                              problem_soln_on,
-                                            ])
-                                          }
-                                        >
-                                          Update
-                                        </button>
-                                      )}
-                                      <button
-                                        className="problem-solution-adder"
-                                        onClick={() => {
-                                          del_Solution(d, i);
-                                        }}
-                                      >
-                                        <i className="material-icons">delete</i>
-                                      </button>
-                                    </li>
-                                  </div>
-                                  <div className="problem-solution-selected">
-                                    {!problem_soln_edit[0] ? (
-                                      <SyntaxHighlighter
-                                        language={codestate.lan}
-                                        style={coldarkDark}
-                                        showLineNumbers="true"
-                                      >
-                                        {codestate.code}
-                                      </SyntaxHighlighter>
-                                    ) : (
-                                      // <CodeEditor data={codestate} onChange={setCodestate} viewOnly={true} />
-                                      <div>
-                                        <CodeEditor
-                                          data={codestate}
-                                          onChange={setCodestate}
-                                          viewOnly={true}
-                                        />
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            ) : (
-                              <></>
-                            )}
-                          </div>
-                        </li>
-                      ))
-                    ) : (
-                      <li className="list-group-item">No Data Found -_-</li>
-                    )}
-                  </ul>
-                </div>
+          <div className="leetcode-tools bg-slate-500 rounded-lg py-2">
+            <div className="leetcode-new-problem-add">
+              <div id="problem-no" className="leetcode-input-style">
+                <input
+                  title="no."
+                  type="text"
+                  value={Leetcode_Problem_id}
+                  onChange={(e) =>
+                    setLeetcode_Problem_id(Number(e.target.value))
+                  }
+                />
               </div>
+              <div id="problem-title" className="leetcode-input-style">
+                <input
+                  title="Problem"
+                  type="text"
+                  placeholder="Enter New Problem Name"
+                  value={Leetcode_Problem_name}
+                  onChange={(e) => setLeetcode_Problem_name(e.target.value)}
+                />
+              </div>
+              <div className="leetcode-input-style">
+                <input
+                  title="Level"
+                  type="text"
+                  value={Leetcode_Problem_level}
+                  onChange={(e) => setLeetcode_Problem_level(e.target.value)}
+                />
+              </div>
+              <div className="leetcode-input-style">
+                <input
+                  title="tags"
+                  type="text"
+                  placeholder="Tags"
+                  value={Leetcode_Problem_Tags}
+                  onChange={(e) =>
+                    setLeetcode_Problem_Tags(e.target.value.split(","))
+                  }
+                />
+              </div>
+              <button
+                type="button"
+                className="bg-white px-2 rounded-md"
+                onClick={() => newProblem_submit()}
+              >
+                Create New
+              </button>
+            </div>
+            <div className="leetcode-tool-buttons">
+              <div className="leetcode-search">
+                <div id="problem-search-box" className="leetcode-input-style">
+                  <input
+                    placeholder="Search..."
+                    title="Search"
+                    type="text"
+                    value={Leetcode_Search}
+                    onChange={(e) => setLeetcode_Search(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="bg-white px-2 rounded-md"
+                >
+                  Search
+                </button>
+              </div>
+              <button
+                type="button"
+                className="bg-white px-2 rounded-md"
+                onClick={() => get_problems_List()}
+              >
+                Get Problems
+              </button>
+              <div className="bg-blue-200 px-2 rounded-md ml-2 max-h-10">
+                No. of Q : {list ? list.length : 0}
+              </div>
+              <button
+                type="button"
+                className={
+                  !busy
+                    ? "bg-green-400 rounded-lg px-2 ml-2"
+                    : "bg-red-700 rounded-lg px-2 ml-2"
+                }
+              >
+                {busy ? "Busy" : "Idel"}
+              </button>
             </div>
           </div>
-
-          <Modal
-            show={delModel}
-            handleClose={() => closeOpenModal()}
-            handleConfirm={() => leetcode_delete()}
-          >
-            <div style={{ display: "inline" }}>
-              <h5>Do you Want To Delete </h5>{" "}
-              <h3>
-                <b>{currDel}</b>
-              </h3>{" "}
-              <h5>Problem ?</h5>{" "}
-            </div>
-          </Modal>
         </div>
+        <br />
+        <div class="flex-1 overflow-y-scroll overflow-x-hidden">
+          <ul class="flex flex-col gap-1 p-1 justify-center items-center">
+            {list.length !== 0 ? (
+              list.map((d, i) => (
+                <li
+                  className={`bg-white rounded-md min-h-10 flex flex-col justify-center ${
+                    problem_info_on === i ? "max-w-full" : "max-w-[900px]"
+                  } w-full items-center p-2`}
+                >
+                  <div
+                    className="flex justify-between w-full"
+                    onClick={() => setCurrent_Active(d, i)}
+                  >
+                    <div className="task-name">
+                      <label className="form-check-label">
+                        <h6 class="mb-0">
+                          {d.problem_no + ". " + d.problem_title}
+                        </h6>
+                      </label>
+                    </div>
+                    <div className="task-tags">
+                      <div className="task-tag">
+                        <span class="badge bg-danger">
+                          {get_date_diff(d.future_ref)}
+                        </span>
+                      </div>
+                      <div className="task-tag">
+                        {d.level == "Easy" ? (
+                          <span class="badge bg-success">{d.level}</span>
+                        ) : d.level == "Medium" ? (
+                          <span class="badge bg-info">{d.level}</span>
+                        ) : (
+                          <span class="badge bg-danger">{d.level}</span>
+                        )}
+                      </div>
+                      <div className="task-tag">
+                        <span class="badge bg-secondary">{d.tags}</span>
+                      </div>
+
+                      <div className="task-tag">
+                        <span onClick={() => openModal(d, i)}>
+                          <i className="material-icons">delete</i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {problem_info_on === i ? (
+                    <div
+                      className={
+                        problem_info_on === i
+                          ? "leetcode-problem_info-active "
+                          : "leetcode-problem_info-block "
+                      }
+                    >
+                      <div className="problem-info-details">
+                        {(problem_des_on[1] === problem_info_on) &
+                        problem_des_on[0] ? (
+                          <div>
+                            <div className="editor_local">
+                              <Editor
+                                editorState={editorState}
+                                onChange={setEditorState}
+                              />
+                            </div>
+                            <button
+                              className="bg-green-300 px-1.5 rounded-md"
+                              onClick={() =>
+                                updateProblem_description(d, i)
+                              }
+                            >
+                              Save
+                            </button>
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="editor_local">
+                              <Editor
+                                editorState={editorState}
+                                readOnly={true}
+                              />
+                            </div>
+                            <button
+                              className="bg-green-300 px-1.5 rounded-md"
+                              onClick={() => setProblem_des_on([true, i])}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                      <div className="problem-solutions">
+                        <div className="problem-solutions-array flex gap-2">
+                          <div
+                            class="dropdown-toggle btn btn-secondary btn-sm"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            {codestate.lan + " | " + codestate.info}
+                          </div>
+                          <ul class="dropdown-menu">
+                            {d.solutions ? (
+                              d.solutions.map((s, si) => (
+                                <>
+                                  <li
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      setCurrent_Active_soln(s, si)
+                                    }
+                                  >
+                                    {s.lan + " | " + s.info}
+                                  </li>
+                                </>
+                              ))
+                            ) : (
+                              <a class="dropdown-item">
+                                No Solutions Available
+                              </a>
+                            )}
+                          </ul>
+
+                          {problem_soln_edit[0] ? (
+                            <button
+                              className="bg-green-300 px-1.5 rounded-md"
+                              onClick={() => updateSolution(d, i)}
+                            >
+                              save
+                            </button>
+                          ) : (
+                            <button
+                              className="bg-green-300 px-1.5 rounded-md"
+                              onClick={() =>
+                                setProblem_soln_edit([
+                                  true,
+                                  problem_info_on,
+                                  problem_soln_on,
+                                ])
+                              }
+                            >
+                              Update
+                            </button>
+                          )}
+                          <button
+                            className="bg-red-400 px-1.5 rounded-md"
+                            onClick={() => {
+                              del_Solution(d, i);
+                            }}
+                          >
+                            <i className="material-icons">delete</i>
+                          </button>
+                          <button
+                            className="bg-blue-400 px-1.5 rounded-md"
+                            onClick={() => {
+                              newBlankSolution(d, i);
+                            }}
+                          >
+                            Add New
+                          </button>
+                        </div>
+                        <div className="problem-solution-selected">
+                          {!problem_soln_edit[0] ? (
+                            <SyntaxHighlighter
+                              language={codestate.lan}
+                              style={coldarkDark}
+                              showLineNumbers="true"
+                            >
+                              {codestate.code}
+                            </SyntaxHighlighter>
+                          ) : (
+                            <div>
+                              <CodeEditor
+                                data={codestate}
+                                onChange={setCodestate}
+                                viewOnly={true}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No Data Found -_-</li>
+            )}
+          </ul>
+        </div>
+
+        <Modal
+          show={delModel}
+          handleClose={() => closeOpenModal()}
+          handleConfirm={() => leetcode_delete()}
+        >
+          <div style={{ display: "inline" }}>
+            <h5>Do you Want To Delete </h5>{" "}
+            <h3>
+              <b>{currDel}</b>
+            </h3>{" "}
+            <h5>Problem ?</h5>{" "}
+          </div>
+        </Modal>
       </div>
-      {/* </div> */}
     </>
   );
 }

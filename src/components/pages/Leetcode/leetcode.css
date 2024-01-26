@@ -133,10 +133,11 @@ body {
 }
 .leetcode-input-style input {
     /* border-radius:5%; */
+    padding: 0 2px;
     border-bottom: none;
     margin-bottom: 3px;
     width: 100%;
-    background: rgba(57, 63, 84, 0.8);;
+    background: rgba(255, 255, 255, 0.8);;
 }
 
 .editor_local {
